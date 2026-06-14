@@ -23,29 +23,52 @@
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
   body {
-    background: var(--bg);
-    color: var(--text);
+    background: var(--bg); color: var(--text);
     font-family: -apple-system, 'SF Pro Display', sans-serif;
-    height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    user-select: none;
-    -webkit-user-select: none;
+    height: 100dvh; display: flex; flex-direction: column;
+    overflow: hidden; user-select: none; -webkit-user-select: none;
   }
 
+  /* ── Login screen ── */
+  .login-screen {
+    position: fixed; inset: 0; background: var(--bg);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 40px 32px; gap: 32px; z-index: 500;
+  }
+  .login-screen.hidden { display: none; }
+
+  .login-logo { font-size: 64px; }
+  .login-title { font-size: 28px; font-weight: 700; text-align: center; }
+  .login-sub { font-size: 15px; color: var(--text-dim); text-align: center; line-height: 1.5; }
+
+  .login-form { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+
+  .login-input {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px 18px; color: var(--text);
+    font-size: 17px; font-family: inherit; outline: none;
+  }
+  .login-input:focus { border-color: var(--accent); }
+  .login-input::placeholder { color: var(--text-dim); }
+
+  .login-btn {
+    width: 100%; background: var(--accent); border: none;
+    border-radius: 14px; padding: 16px; color: #fff;
+    font-size: 17px; font-weight: 600; font-family: inherit; cursor: pointer;
+  }
+  .login-btn:active { opacity: 0.85; }
+
+  /* ── Flash ── */
   .flash { position: fixed; inset: 0; background: var(--accent); opacity: 0; pointer-events: none; z-index: 999; transition: opacity 0.15s ease; }
   .flash.show { opacity: 0.18; }
 
   /* ── Tab bar ── */
   .tab-bar {
-    display: flex;
-    border-bottom: 1px solid var(--border);
+    display: flex; border-bottom: 1px solid var(--border);
     padding: calc(var(--safe-top) + 8px) 16px 0;
-    gap: 2px;
-    flex-shrink: 0;
+    gap: 2px; flex-shrink: 0;
   }
-
   .tab-btn {
     flex: 1; background: none; border: none; color: var(--text-dim);
     font-family: inherit; font-size: 12px; font-weight: 500;
@@ -67,6 +90,11 @@
     padding: 16px 24px 24px; gap: 24px;
   }
 
+  .user-greeting { font-size: 13px; color: var(--text-dim); display: flex; align-items: center; gap: 8px; }
+  .user-greeting strong { color: var(--text); }
+  .btn-logout { background: none; border: none; color: var(--text-dim); font-size: 12px; cursor: pointer; padding: 4px 8px; border-radius: 8px; font-family: inherit; }
+  .btn-logout:active { background: var(--surface2); }
+
   .counter-ring { position: relative; width: 190px; height: 190px; }
   .ring-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
   .ring-track { fill: none; stroke: var(--surface2); stroke-width: 8; }
@@ -82,7 +110,6 @@
   @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(255,107,53,0.5); } 100% { box-shadow: 0 0 0 24px rgba(255,107,53,0); } }
 
   .action-row { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 4px; }
-
   .btn-ghost { background: none; border: none; color: var(--text-dim); font-size: 14px; cursor: pointer; padding: 8px 12px; border-radius: 10px; font-family: inherit; display: flex; align-items: center; gap: 6px; }
   .btn-ghost:active { background: var(--surface2); }
   .btn-undo { color: var(--accent); }
@@ -95,7 +122,6 @@
 
   .history-section { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 18px; }
   .section-title { font-size: 12px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
-
   .chart { display: flex; align-items: flex-end; gap: 6px; height: 56px; }
   .chart-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
   .chart-bar-wrap { flex: 1; width: 100%; display: flex; align-items: flex-end; justify-content: center; }
@@ -103,76 +129,60 @@
   .chart-bar.today { background: var(--accent); }
   .chart-day { font-size: 9px; color: var(--text-dim); text-align: center; }
 
-  /* ── Timeline page ── */
-  .timeline-page { padding: 20px 24px calc(var(--safe-bottom) + 20px); gap: 16px; }
+  /* ── Classement ── */
+  .leaderboard-page { padding: 20px 24px calc(var(--safe-bottom) + 20px); gap: 16px; overflow-y: auto; }
+  .lb-title { font-size: 22px; font-weight: 700; }
+  .lb-subtitle { font-size: 13px; color: var(--text-dim); margin-top: -8px; }
 
-  .timeline-header { display: flex; justify-content: space-between; align-items: center; }
-  .timeline-title { font-size: 22px; font-weight: 700; }
-  .timeline-count { font-size: 14px; color: var(--text-dim); }
+  .lb-list { display: flex; flex-direction: column; gap: 10px; }
 
-  /* Heatmap 24h */
-  .heatmap-section { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 18px; }
-  .heatmap-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; margin-bottom: 8px; }
-  .heatmap-cell { aspect-ratio: 1; border-radius: 4px; background: var(--surface2); transition: background 0.3s; }
-  .heatmap-labels { display: grid; grid-template-columns: repeat(12, 1fr); }
-  .heatmap-label { font-size: 9px; color: var(--text-dim); text-align: center; }
-
-  /* Pic du jour */
-  .peak-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 18px; display: flex; justify-content: space-between; align-items: center; }
-  .peak-info { display: flex; flex-direction: column; gap: 4px; }
-  .peak-label { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
-  .peak-value { font-size: 28px; font-weight: 700; color: var(--accent); }
-  .peak-sub { font-size: 13px; color: var(--text-dim); }
-
-  /* Liste des cigarettes */
-  .timeline-list { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
-  .timeline-empty { padding: 40px; text-align: center; color: var(--text-dim); font-size: 15px; }
-
-  .timeline-item {
+  .lb-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 18px; padding: 16px 18px;
     display: flex; align-items: center; gap: 14px;
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--border);
-    position: relative;
   }
-  .timeline-item:last-child { border-bottom: none; }
+  .lb-item.me { border-color: var(--accent); background: rgba(255,107,53,0.08); }
 
-  .timeline-dot {
-    width: 10px; height: 10px; border-radius: 50%;
-    background: var(--accent); flex-shrink: 0;
-    opacity: 0.5;
-  }
-  .timeline-dot.recent { opacity: 1; box-shadow: 0 0 6px rgba(255,107,53,0.6); }
+  .lb-rank { font-size: 20px; font-weight: 700; min-width: 32px; text-align: center; }
+  .lb-rank.gold { color: #FFD700; }
+  .lb-rank.silver { color: #C0C0C0; }
+  .lb-rank.bronze { color: #CD7F32; }
 
-  .timeline-time { font-size: 16px; font-weight: 600; color: var(--text); min-width: 48px; }
-  .timeline-gap { font-size: 12px; color: var(--text-dim); }
+  .lb-info { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+  .lb-name { font-size: 16px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 6px; }
+  .lb-name .you-badge { font-size: 10px; background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 6px; font-weight: 600; }
+  .lb-details { font-size: 12px; color: var(--text-dim); }
 
-  .timeline-item-num { margin-left: auto; font-size: 12px; color: var(--text-dim); }
+  .lb-count { font-size: 28px; font-weight: 700; color: var(--accent); }
+
+  .lb-bar-wrap { width: 100%; height: 4px; background: var(--surface2); border-radius: 2px; margin-top: 4px; }
+  .lb-bar { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.5s ease; }
+
+  .lb-empty { text-align: center; padding: 40px 20px; color: var(--text-dim); font-size: 15px; line-height: 1.6; }
+
+  .lb-loading { text-align: center; padding: 40px; color: var(--text-dim); }
 
   /* ── Stats page ── */
   .stats-page { padding: 20px 24px calc(var(--safe-bottom) + 20px); gap: 16px; overflow-y: auto; }
   .stats-page-title { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-
   .month-nav { display: flex; align-items: center; justify-content: space-between; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 12px 16px; }
   .month-nav-btn { background: none; border: none; color: var(--accent); font-size: 20px; cursor: pointer; padding: 4px 8px; border-radius: 8px; font-family: inherit; }
   .month-nav-btn:active { background: var(--surface2); }
   .month-nav-btn:disabled { color: var(--text-dim); opacity: 0.3; }
   .month-label { font-size: 16px; font-weight: 600; color: var(--text); }
-
   .monthly-stats-row { display: flex; gap: 10px; }
   .monthly-stat { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 4px; }
   .monthly-stat-value { font-size: 26px; font-weight: 700; color: var(--accent); }
   .monthly-stat-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
-
   .calendar-section { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 18px; }
   .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 12px; }
-  .cal-day-header { font-size: 10px; color: var(--text-dim); text-align: center; padding: 4px 0; text-transform: uppercase; letter-spacing: 0.04em; }
+  .cal-day-header { font-size: 10px; color: var(--text-dim); text-align: center; padding: 4px 0; text-transform: uppercase; }
   .cal-day { aspect-ratio: 1; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; color: var(--text-dim); gap: 1px; }
   .cal-day.has-data { color: var(--text); }
   .cal-day.today-cal { background: var(--accent); color: #fff; border-radius: 10px; }
   .cal-day.today-cal .cal-count { color: rgba(255,255,255,0.85); }
   .cal-day-num { font-size: 12px; font-weight: 500; line-height: 1; }
   .cal-count { font-size: 9px; color: var(--text-dim); line-height: 1; }
-
   .trend-section { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 18px; }
   .monthly-chart { display: flex; align-items: flex-end; gap: 3px; height: 80px; }
   .monthly-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; height: 100%; justify-content: flex-end; }
@@ -180,6 +190,31 @@
   .monthly-bar { width: 100%; border-radius: 3px 3px 0 0; background: var(--surface2); min-height: 2px; }
   .monthly-bar.active { background: var(--accent); }
   .monthly-num { font-size: 8px; color: var(--text-dim); }
+
+  /* ── Timeline ── */
+  .timeline-page { padding: 20px 24px calc(var(--safe-bottom) + 20px); gap: 16px; }
+  .timeline-header { display: flex; justify-content: space-between; align-items: center; }
+  .timeline-title { font-size: 22px; font-weight: 700; }
+  .timeline-count { font-size: 14px; color: var(--text-dim); }
+  .heatmap-section { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 18px; }
+  .heatmap-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; margin-bottom: 4px; }
+  .heatmap-cell { aspect-ratio: 1; border-radius: 4px; background: var(--surface2); }
+  .heatmap-labels { display: grid; grid-template-columns: repeat(12, 1fr); margin-bottom: 10px; }
+  .heatmap-label { font-size: 9px; color: var(--text-dim); text-align: center; }
+  .peak-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 18px; display: flex; justify-content: space-between; align-items: center; }
+  .peak-info { display: flex; flex-direction: column; gap: 4px; }
+  .peak-label { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+  .peak-value { font-size: 28px; font-weight: 700; color: var(--accent); }
+  .peak-sub { font-size: 13px; color: var(--text-dim); }
+  .timeline-list { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
+  .timeline-empty { padding: 40px; text-align: center; color: var(--text-dim); font-size: 15px; }
+  .timeline-item { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-bottom: 1px solid var(--border); }
+  .timeline-item:last-child { border-bottom: none; }
+  .timeline-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); flex-shrink: 0; opacity: 0.5; }
+  .timeline-dot.recent { opacity: 1; box-shadow: 0 0 6px rgba(255,107,53,0.6); }
+  .timeline-time { font-size: 16px; font-weight: 600; color: var(--text); min-width: 48px; }
+  .timeline-gap { font-size: 12px; color: var(--text-dim); }
+  .timeline-item-num { margin-left: auto; font-size: 12px; color: var(--text-dim); }
 
   /* ── Toast ── */
   .toast { position: fixed; bottom: calc(var(--safe-bottom) + 80px); left: 50%; transform: translateX(-50%) translateY(20px); background: var(--surface2); color: var(--text); padding: 10px 20px; border-radius: 100px; font-size: 14px; opacity: 0; transition: opacity 0.2s, transform 0.2s; white-space: nowrap; border: 1px solid var(--border); pointer-events: none; z-index: 100; }
@@ -203,11 +238,23 @@
 </head>
 <body>
 
+<!-- ── LOGIN ── -->
+<div class="login-screen" id="login-screen">
+  <div class="login-logo">🚬</div>
+  <div class="login-title">Compteur de cigarettes</div>
+  <div class="login-sub">Entre ton prénom pour commencer à compter et voir les stats de tes amis.</div>
+  <div class="login-form">
+    <input class="login-input" id="login-input" type="text" placeholder="Ton prénom (ex: Gabriel)" maxlength="20" autocomplete="off">
+    <button class="login-btn" onclick="login()">C'est parti 🚬</button>
+  </div>
+</div>
+
 <div class="flash" id="flash"></div>
 
 <!-- Tab bar -->
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('home')" id="tab-home">🚬 Aujourd'hui</button>
+  <button class="tab-btn active" onclick="switchTab('home')" id="tab-home">🚬 Moi</button>
+  <button class="tab-btn" onclick="switchTab('leaderboard')" id="tab-leaderboard">🏆 Amis</button>
   <button class="tab-btn" onclick="switchTab('timeline')" id="tab-timeline">🕐 Timeline</button>
   <button class="tab-btn" onclick="switchTab('stats')" id="tab-stats">📊 Stats</button>
 </div>
@@ -215,6 +262,11 @@
 <!-- ── HOME ── -->
 <div class="page active" id="page-home">
   <div class="main">
+    <div class="user-greeting">
+      Bonjour <strong id="greeting-name"></strong>
+      <button class="btn-logout" onclick="logout()">Changer ↩</button>
+    </div>
+
     <div class="counter-ring">
       <svg class="ring-svg" viewBox="0 0 220 220">
         <circle class="ring-track" cx="110" cy="110" r="100"/>
@@ -255,23 +307,28 @@
   </div>
 </div>
 
+<!-- ── LEADERBOARD ── -->
+<div class="page leaderboard-page" id="page-leaderboard">
+  <div class="lb-title">🏆 Classement</div>
+  <div class="lb-subtitle" id="lb-date"></div>
+  <div class="lb-list" id="lb-list">
+    <div class="lb-loading">Chargement...</div>
+  </div>
+</div>
+
 <!-- ── TIMELINE ── -->
 <div class="page timeline-page" id="page-timeline">
   <div class="timeline-header">
     <div class="timeline-title">Timeline</div>
     <div class="timeline-count" id="tl-count"></div>
   </div>
-
-  <!-- Heatmap 24h -->
   <div class="heatmap-section">
     <div class="section-title">Répartition par heure</div>
     <div class="heatmap-grid" id="heatmap-top"></div>
-    <div class="heatmap-grid" id="heatmap-bot"></div>
     <div class="heatmap-labels" id="heatmap-labels-top"></div>
+    <div class="heatmap-grid" id="heatmap-bot"></div>
     <div class="heatmap-labels" id="heatmap-labels-bot"></div>
   </div>
-
-  <!-- Pic de la journée -->
   <div class="peak-card">
     <div class="peak-info">
       <div class="peak-label">Pic de la journée</div>
@@ -280,8 +337,6 @@
     </div>
     <div style="font-size:36px">📈</div>
   </div>
-
-  <!-- Liste chronologique -->
   <div class="timeline-list" id="timeline-list">
     <div class="timeline-empty">Aucune cigarette aujourd'hui</div>
   </div>
@@ -290,40 +345,23 @@
 <!-- ── STATS ── -->
 <div class="page stats-page" id="page-stats">
   <div class="stats-page-title">Statistiques</div>
-
   <div class="month-nav">
     <button class="month-nav-btn" id="btn-prev-month" onclick="changeMonth(-1)">‹</button>
     <span class="month-label" id="month-label"></span>
     <button class="month-nav-btn" id="btn-next-month" onclick="changeMonth(1)">›</button>
   </div>
-
   <div class="monthly-stats-row">
-    <div class="monthly-stat">
-      <div class="monthly-stat-value" id="m-total">—</div>
-      <div class="monthly-stat-label">Total du mois</div>
-    </div>
-    <div class="monthly-stat">
-      <div class="monthly-stat-value" id="m-avg">—</div>
-      <div class="monthly-stat-label">Moyenne / jour</div>
-    </div>
+    <div class="monthly-stat"><div class="monthly-stat-value" id="m-total">—</div><div class="monthly-stat-label">Total du mois</div></div>
+    <div class="monthly-stat"><div class="monthly-stat-value" id="m-avg">—</div><div class="monthly-stat-label">Moyenne / jour</div></div>
   </div>
-
   <div class="monthly-stats-row">
-    <div class="monthly-stat">
-      <div class="monthly-stat-value" id="m-max">—</div>
-      <div class="monthly-stat-label">Jour le + chargé</div>
-    </div>
-    <div class="monthly-stat">
-      <div class="monthly-stat-value" id="m-min">—</div>
-      <div class="monthly-stat-label">Meilleur jour</div>
-    </div>
+    <div class="monthly-stat"><div class="monthly-stat-value" id="m-max">—</div><div class="monthly-stat-label">Jour le + chargé</div></div>
+    <div class="monthly-stat"><div class="monthly-stat-value" id="m-min">—</div><div class="monthly-stat-label">Meilleur jour</div></div>
   </div>
-
   <div class="calendar-section">
     <div class="section-title">Calendrier</div>
     <div class="cal-grid" id="cal-grid"></div>
   </div>
-
   <div class="trend-section">
     <div class="section-title">Évolution du mois</div>
     <div class="monthly-chart" id="monthly-chart"></div>
@@ -345,104 +383,147 @@
 <div class="toast" id="toast"></div>
 <div class="smoke-container" id="smoke-container"></div>
 
-<script>
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, onValue, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC_gh0lllJDRwxFci-EbZBxr-AKDgza1UQ",
+  authDomain: "compteurcig-b2a88.firebaseapp.com",
+  databaseURL: "https://compteurcig-b2a88-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "compteurcig-b2a88",
+  storageBucket: "compteurcig-b2a88.firebasestorage.app",
+  messagingSenderId: "942509208244",
+  appId: "1:942509208244:web:ef82901f8c9dda7feb1de1"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// ── Globals ──
 const DAILY_GOAL = 20;
+let currentUser = null;
 let currentMonth = new Date(); currentMonth.setDate(1);
+let lbUnsubscribe = null;
 
 // ── Keys ──
 function todayKey() {
   const d = new Date();
-  return `cig_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 function dateKey(d) {
-  return `cig_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
-function todayTimesKey() { return todayKey() + '_times'; }
 
-// ── Storage ──
-function getHistory() { try { return JSON.parse(localStorage.getItem('cig_history')||'{}'); } catch { return {}; } }
-function saveHistory(h) { localStorage.setItem('cig_history', JSON.stringify(h)); }
-function getCount() { return getHistory()[todayKey()]||0; }
-function setCount(n) { const h=getHistory(); h[todayKey()]=n; saveHistory(h); }
+// ── Local storage (historique perso) ──
+function getLocalHistory() { try { return JSON.parse(localStorage.getItem('cig_history')||'{}'); } catch { return {}; } }
+function saveLocalHistory(h) { localStorage.setItem('cig_history', JSON.stringify(h)); }
+function getLocalCount() { return getLocalHistory()[todayKey()]||0; }
+function setLocalCount(n) { const h=getLocalHistory(); h[todayKey()]=n; saveLocalHistory(h); }
+function getTodayTimes() { try { return JSON.parse(localStorage.getItem('cig_times_'+todayKey())||'[]'); } catch { return []; } }
+function saveTodayTimes(t) { localStorage.setItem('cig_times_'+todayKey(), JSON.stringify(t)); }
 
-function getTodayTimes() { try { return JSON.parse(localStorage.getItem(todayTimesKey())||'[]'); } catch { return []; } }
-function saveTodayTimes(t) { localStorage.setItem(todayTimesKey(), JSON.stringify(t)); }
+// ── Firebase sync ──
+async function syncToFirebase(count) {
+  if (!currentUser) return;
+  const today = todayKey();
+  await set(ref(db, `users/${currentUser}/days/${today}`), count);
+  await set(ref(db, `users/${currentUser}/name`), currentUser);
+  await set(ref(db, `users/${currentUser}/lastSeen`), Date.now());
+}
+
+// ── Login ──
+window.login = function() {
+  const input = document.getElementById('login-input');
+  const name = input.value.trim();
+  if (!name) { input.focus(); return; }
+  currentUser = name;
+  localStorage.setItem('cig_username', name);
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('greeting-name').textContent = name;
+  syncToFirebase(getLocalCount());
+  render();
+}
+
+window.logout = function() {
+  currentUser = null;
+  localStorage.removeItem('cig_username');
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('login-input').value = '';
+}
+
+// Auto-login
+const savedUser = localStorage.getItem('cig_username');
+if (savedUser) {
+  currentUser = savedUser;
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('greeting-name').textContent = savedUser;
+  syncToFirebase(getLocalCount());
+}
 
 // ── Actions ──
-function addCig(auto) {
-  const n = getCount() + 1;
-  setCount(n);
-  // Save timestamp
-  const times = getTodayTimes();
-  times.push(Date.now());
-  saveTodayTimes(times);
-
-  render();
-  animateBump();
+window.addCig = function(auto) {
+  const n = getLocalCount() + 1;
+  setLocalCount(n);
+  const times = getTodayTimes(); times.push(Date.now()); saveTodayTimes(times);
+  syncToFirebase(n);
+  render(); animateBump();
   if (auto) {
     const flash = document.getElementById('flash');
-    flash.classList.add('show');
-    setTimeout(() => flash.classList.remove('show'), 300);
+    flash.classList.add('show'); setTimeout(()=>flash.classList.remove('show'),300);
     showToast('🚬 +1 cigarette ajoutée !');
   } else {
     smokeEffect();
     const btn = document.getElementById('btn-add');
     btn.classList.add('pulse');
-    btn.addEventListener('animationend', () => btn.classList.remove('pulse'), {once:true});
+    btn.addEventListener('animationend',()=>btn.classList.remove('pulse'),{once:true});
   }
   document.getElementById('btn-undo').disabled = false;
 }
 
-function undoCig() {
-  const n = Math.max(0, getCount()-1);
-  setCount(n);
-  // Remove last timestamp
-  const times = getTodayTimes();
-  times.pop();
-  saveTodayTimes(times);
-  render();
-  showToast('Dernière cigarette annulée');
+window.undoCig = function() {
+  const n = Math.max(0, getLocalCount()-1);
+  setLocalCount(n);
+  const times = getTodayTimes(); times.pop(); saveTodayTimes(times);
+  syncToFirebase(n);
+  render(); showToast('Dernière cigarette annulée');
   if (n===0) document.getElementById('btn-undo').disabled = true;
 }
 
-function resetToday() {
-  setCount(0);
-  saveTodayTimes([]);
-  render();
-  closeModal();
-  showToast('Compteur remis à zéro');
+window.resetToday = function() {
+  setLocalCount(0); saveTodayTimes([]);
+  syncToFirebase(0);
+  render(); closeModal(); showToast('Compteur remis à zéro');
   document.getElementById('btn-undo').disabled = true;
 }
 
 // ── Render home ──
 function render() {
-  const count = getCount();
-  const h = getHistory();
+  const count = getLocalCount();
+  const h = getLocalHistory();
   const today = todayKey();
 
   document.getElementById('count-display').textContent = count;
-  const offset = 628*(1-Math.min(count/DAILY_GOAL,1));
-  document.getElementById('ring-fill').style.strokeDashoffset = offset;
+  document.getElementById('ring-fill').style.strokeDashoffset = 628*(1-Math.min(count/DAILY_GOAL,1));
 
   const days = Object.keys(h).sort().slice(-7);
   const vals = days.map(k=>h[k]||0);
   const total = vals.reduce((a,b)=>a+b,0);
-  const avg = days.length ? (total/days.length).toFixed(1) : '—';
-  const best = vals.length ? Math.min(...vals) : '—';
+  const avg = days.length?(total/days.length).toFixed(1):'—';
+  const best = vals.length?Math.min(...vals):'—';
 
   document.getElementById('stat-total').textContent = total;
   document.getElementById('stat-avg').textContent = avg;
   document.getElementById('stat-best').textContent = best===Infinity?'—':best;
-
   renderWeekChart(h, today);
 }
 
 function renderWeekChart(h, today) {
-  const chart = document.getElementById('chart'); chart.innerHTML = '';
+  const chart = document.getElementById('chart'); chart.innerHTML='';
   const days = [];
-  for (let i=6;i>=0;i--) {
-    const d=new Date(); d.setDate(d.getDate()-i);
-    const key=dateKey(d);
+  for(let i=6;i>=0;i--){
+    const d=new Date(); d.setDate(d.getDate()-i); const key=dateKey(d);
     days.push({label:['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'][d.getDay()],val:h[key]||0,isToday:key===today});
   }
   const max=Math.max(...days.map(d=>d.val),1);
@@ -458,124 +539,137 @@ function renderWeekChart(h, today) {
   });
 }
 
-// ── Render timeline ──
+// ── Leaderboard ──
+async function renderLeaderboard() {
+  const list = document.getElementById('lb-list');
+  list.innerHTML = '<div class="lb-loading">Chargement...</div>';
+
+  const today = todayKey();
+  document.getElementById('lb-date').textContent = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+
+  try {
+    const snapshot = await get(ref(db, 'users'));
+    if (!snapshot.exists()) {
+      list.innerHTML = '<div class="lb-empty">Aucun ami pour l\'instant.<br>Partage le lien à tes amis ! 🚬</div>';
+      return;
+    }
+
+    const users = snapshot.val();
+    const entries = Object.entries(users).map(([name, data]) => ({
+      name,
+      count: (data.days && data.days[today]) || 0,
+      total7: data.days ? Object.entries(data.days).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,7).reduce((s,[,v])=>s+v,0) : 0
+    }));
+
+    entries.sort((a,b) => b.count - a.count);
+    const max = Math.max(...entries.map(e=>e.count), 1);
+
+    list.innerHTML = '';
+    entries.forEach((entry, i) => {
+      const isMe = entry.name === currentUser;
+      const item = document.createElement('div');
+      item.className = 'lb-item' + (isMe ? ' me' : '');
+
+      const rankColors = ['gold','silver','bronze'];
+      const rankEmojis = ['🥇','🥈','🥉'];
+
+      item.innerHTML = `
+        <div class="lb-rank ${rankColors[i]||''}">${i < 3 ? rankEmojis[i] : i+1}</div>
+        <div class="lb-info">
+          <div class="lb-name">${entry.name}${isMe?'<span class="you-badge">Moi</span>':''}</div>
+          <div class="lb-details">Total 7j : ${entry.total7} cig.</div>
+          <div class="lb-bar-wrap"><div class="lb-bar" style="width:${(entry.count/max)*100}%"></div></div>
+        </div>
+        <div class="lb-count">${entry.count}</div>
+      `;
+      list.appendChild(item);
+    });
+  } catch(e) {
+    list.innerHTML = '<div class="lb-empty">Erreur de chargement. Vérifie ta connexion.</div>';
+  }
+}
+
+// ── Timeline ──
 function renderTimeline() {
   const times = getTodayTimes();
-  const count = getCount();
+  const count = getLocalCount();
+  document.getElementById('tl-count').textContent = count>0?`${count} cigarette${count>1?'s':''}`:'';
 
-  document.getElementById('tl-count').textContent = count > 0 ? `${count} cigarette${count>1?'s':''}` : '';
-
-  // Heatmap 24h (split en 2 rangées de 12h)
   const hourCounts = new Array(24).fill(0);
-  times.forEach(ts => { hourCounts[new Date(ts).getHours()]++; });
-  const maxH = Math.max(...hourCounts, 1);
+  times.forEach(ts=>{ hourCounts[new Date(ts).getHours()]++; });
+  const maxH = Math.max(...hourCounts,1);
 
-  function buildHeatRow(startH, endH, gridId, labelsId) {
-    const grid = document.getElementById(gridId); grid.innerHTML='';
-    const labels = document.getElementById(labelsId); labels.innerHTML='';
-    for (let h=startH; h<endH; h++) {
-      const cell = document.createElement('div'); cell.className='heatmap-cell';
-      const intensity = hourCounts[h]/maxH;
-      if (hourCounts[h]>0) {
-        cell.style.background = `rgba(255,107,53,${0.2+intensity*0.8})`;
-        cell.title = `${h}h: ${hourCounts[h]} cig.`;
-      }
+  function buildHeatRow(startH,endH,gridId,labelsId){
+    const grid=document.getElementById(gridId); grid.innerHTML='';
+    const labels=document.getElementById(labelsId); labels.innerHTML='';
+    for(let h=startH;h<endH;h++){
+      const cell=document.createElement('div'); cell.className='heatmap-cell';
+      if(hourCounts[h]>0) cell.style.background=`rgba(255,107,53,${0.2+(hourCounts[h]/maxH)*0.8})`;
       grid.appendChild(cell);
-      const lbl = document.createElement('div'); lbl.className='heatmap-label';
-      lbl.textContent = h%3===0 ? `${h}h` : '';
-      labels.appendChild(lbl);
+      const lbl=document.createElement('div'); lbl.className='heatmap-label';
+      lbl.textContent=h%3===0?`${h}h`:''; labels.appendChild(lbl);
     }
   }
+  buildHeatRow(0,12,'heatmap-top','heatmap-labels-top');
+  buildHeatRow(12,24,'heatmap-bot','heatmap-labels-bot');
 
-  buildHeatRow(0, 12, 'heatmap-top', 'heatmap-labels-top');
-  buildHeatRow(12, 24, 'heatmap-bot', 'heatmap-labels-bot');
-
-  // Pic de la journée
-  const peakHour = hourCounts.indexOf(Math.max(...hourCounts));
-  const peakCount = hourCounts[peakHour];
-  if (peakCount > 0) {
-    document.getElementById('peak-hour').textContent = `${peakHour}h–${peakHour+1}h`;
-    document.getElementById('peak-sub').textContent = `${peakCount} cigarette${peakCount>1?'s':''} sur cette heure`;
+  const peakHour=hourCounts.indexOf(Math.max(...hourCounts));
+  const peakCount=hourCounts[peakHour];
+  if(peakCount>0){
+    document.getElementById('peak-hour').textContent=`${peakHour}h–${peakHour+1}h`;
+    document.getElementById('peak-sub').textContent=`${peakCount} cigarette${peakCount>1?'s':''} sur cette heure`;
   } else {
-    document.getElementById('peak-hour').textContent = '—';
-    document.getElementById('peak-sub').textContent = 'Aucune donnée';
+    document.getElementById('peak-hour').textContent='—';
+    document.getElementById('peak-sub').textContent='Aucune donnée';
   }
 
-  // Liste chronologique
-  const list = document.getElementById('timeline-list');
-  if (times.length === 0) {
-    list.innerHTML = '<div class="timeline-empty">Aucune cigarette aujourd\'hui 👍</div>';
-    return;
-  }
-
-  list.innerHTML = '';
-  const sorted = [...times].sort((a,b)=>b-a); // plus récente en premier
-  sorted.forEach((ts, i) => {
-    const d = new Date(ts);
-    const h = String(d.getHours()).padStart(2,'0');
-    const m = String(d.getMinutes()).padStart(2,'0');
-
-    const item = document.createElement('div'); item.className='timeline-item';
-
-    const dot = document.createElement('div'); dot.className='timeline-dot'+(i===0?' recent':'');
-
-    const time = document.createElement('div'); time.className='timeline-time';
-    time.textContent = `${h}:${m}`;
-
-    const gap = document.createElement('div'); gap.className='timeline-gap';
-    if (i < sorted.length-1) {
-      const diffMs = sorted[i] - sorted[i+1];
-      const diffMin = Math.round(diffMs/60000);
-      if (diffMin < 60) gap.textContent = `+${diffMin} min après`;
-      else gap.textContent = `+${Math.round(diffMin/60)}h après`;
-    } else {
-      gap.textContent = 'Première du jour';
-    }
-
-    const num = document.createElement('div'); num.className='timeline-item-num';
-    num.textContent = `#${sorted.length - i}`;
-
-    item.appendChild(dot);
-    item.appendChild(time);
-    item.appendChild(gap);
-    item.appendChild(num);
+  const list=document.getElementById('timeline-list');
+  if(times.length===0){list.innerHTML='<div class="timeline-empty">Aucune cigarette aujourd\'hui 👍</div>';return;}
+  list.innerHTML='';
+  const sorted=[...times].sort((a,b)=>b-a);
+  sorted.forEach((ts,i)=>{
+    const d=new Date(ts);
+    const h=String(d.getHours()).padStart(2,'0'), m=String(d.getMinutes()).padStart(2,'0');
+    const item=document.createElement('div'); item.className='timeline-item';
+    const dot=document.createElement('div'); dot.className='timeline-dot'+(i===0?' recent':'');
+    const time=document.createElement('div'); time.className='timeline-time'; time.textContent=`${h}:${m}`;
+    const gap=document.createElement('div'); gap.className='timeline-gap';
+    if(i<sorted.length-1){
+      const diffMin=Math.round((sorted[i]-sorted[i+1])/60000);
+      gap.textContent=diffMin<60?`+${diffMin} min après`:`+${Math.round(diffMin/60)}h après`;
+    } else gap.textContent='Première du jour';
+    const num=document.createElement('div'); num.className='timeline-item-num'; num.textContent=`#${sorted.length-i}`;
+    item.appendChild(dot); item.appendChild(time); item.appendChild(gap); item.appendChild(num);
     list.appendChild(item);
   });
 }
 
-// ── Render stats ──
+// ── Stats ──
 function renderStats() {
-  const h = getHistory();
+  const h = getLocalHistory();
   const now = new Date();
-  const y = currentMonth.getFullYear(), m = currentMonth.getMonth();
-  const monthNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-  document.getElementById('month-label').textContent = `${monthNames[m]} ${y}`;
-  const isCurrentMonth = y===now.getFullYear()&&m===now.getMonth();
-  document.getElementById('btn-next-month').disabled = isCurrentMonth;
+  const y=currentMonth.getFullYear(), m=currentMonth.getMonth();
+  const monthNames=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  document.getElementById('month-label').textContent=`${monthNames[m]} ${y}`;
+  document.getElementById('btn-next-month').disabled=y===now.getFullYear()&&m===now.getMonth();
 
-  const daysInMonth = new Date(y,m+1,0).getDate();
-  const monthData = [];
-  for (let d=1;d<=daysInMonth;d++) {
+  const daysInMonth=new Date(y,m+1,0).getDate();
+  const monthData=[];
+  for(let d=1;d<=daysInMonth;d++){
     const date=new Date(y,m,d); const key=dateKey(date);
     monthData.push({day:d,val:h[key]||0,date,key});
   }
-
-  const daysWithData = monthData.filter(d=>d.val>0);
-  const total = monthData.reduce((a,b)=>a+b.val,0);
-  const avg = daysWithData.length?(total/daysWithData.length).toFixed(1):'—';
-  const maxVal = daysWithData.length?Math.max(...daysWithData.map(d=>d.val)):0;
-  const minVal = daysWithData.length?Math.min(...daysWithData.map(d=>d.val)):'—';
-
-  document.getElementById('m-total').textContent = total||'—';
-  document.getElementById('m-avg').textContent = avg;
-  document.getElementById('m-max').textContent = maxVal||'—';
-  document.getElementById('m-min').textContent = minVal;
-
-  renderCalendar(monthData, y, m, now);
-  renderMonthlyChart(monthData, now);
+  const daysWithData=monthData.filter(d=>d.val>0);
+  const total=monthData.reduce((a,b)=>a+b.val,0);
+  document.getElementById('m-total').textContent=total||'—';
+  document.getElementById('m-avg').textContent=daysWithData.length?(total/daysWithData.length).toFixed(1):'—';
+  document.getElementById('m-max').textContent=daysWithData.length?Math.max(...daysWithData.map(d=>d.val)):'—';
+  document.getElementById('m-min').textContent=daysWithData.length?Math.min(...daysWithData.map(d=>d.val)):'—';
+  renderCalendar(monthData,y,m,now);
+  renderMonthlyChart(monthData,now);
 }
 
-function renderCalendar(monthData, y, m, now) {
+function renderCalendar(monthData,y,m,now){
   const grid=document.getElementById('cal-grid'); grid.innerHTML='';
   ['Lu','Ma','Me','Je','Ve','Sa','Di'].forEach(d=>{
     const h=document.createElement('div'); h.className='cal-day-header'; h.textContent=d; grid.appendChild(h);
@@ -586,55 +680,52 @@ function renderCalendar(monthData, y, m, now) {
   const todayStr=dateKey(now);
   monthData.forEach(({day,val,key})=>{
     const cell=document.createElement('div');
-    const isToday=key===todayStr, isPast=new Date(y,m,day)<=now;
+    const isToday=key===todayStr;
     cell.className='cal-day'+(val>0?' has-data':'')+(isToday?' today-cal':'');
     const num=document.createElement('div'); num.className='cal-day-num'; num.textContent=day;
     const count=document.createElement('div'); count.className='cal-count';
-    count.textContent=val>0?val:(isPast&&!isToday?'·':'');
+    count.textContent=val>0?val:(new Date(y,m,day)<=now&&!isToday?'·':'');
     cell.appendChild(num); cell.appendChild(count); grid.appendChild(cell);
   });
 }
 
-function renderMonthlyChart(monthData, now) {
+function renderMonthlyChart(monthData,now){
   const chart=document.getElementById('monthly-chart'); chart.innerHTML='';
   const max=Math.max(...monthData.map(d=>d.val),1);
   const todayStr=dateKey(now);
   monthData.forEach(({day,val,key})=>{
     const col=document.createElement('div'); col.className='monthly-col';
     const wrap=document.createElement('div'); wrap.className='monthly-bar-wrap';
-    const bar=document.createElement('div');
-    bar.className='monthly-bar'+(key===todayStr?' active':'');
+    const bar=document.createElement('div'); bar.className='monthly-bar'+(key===todayStr?' active':'');
     bar.style.height=Math.max((val/max)*100,val>0?6:2)+'%';
     if(val>0&&key!==todayStr) bar.style.background=`rgba(255,107,53,${0.3+(val/max)*0.7})`;
     wrap.appendChild(bar);
-    const lbl=document.createElement('div'); lbl.className='monthly-num';
-    lbl.textContent=day%5===0?day:'';
+    const lbl=document.createElement('div'); lbl.className='monthly-num'; lbl.textContent=day%5===0?day:'';
     col.appendChild(wrap); col.appendChild(lbl); chart.appendChild(col);
   });
 }
 
 // ── Tabs ──
-function switchTab(tab) {
+window.switchTab = function(tab) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+tab).classList.add('active');
   document.getElementById('tab-'+tab).classList.add('active');
   if(tab==='stats') renderStats();
   if(tab==='timeline') renderTimeline();
+  if(tab==='leaderboard') renderLeaderboard();
 }
 
-function changeMonth(dir) { currentMonth.setMonth(currentMonth.getMonth()+dir); renderStats(); }
+window.changeMonth = function(dir){ currentMonth.setMonth(currentMonth.getMonth()+dir); renderStats(); }
 
 // ── Animations ──
-function animateBump() {
+function animateBump(){
   const el=document.getElementById('count-display');
-  el.classList.add('bump');
-  el.addEventListener('transitionend',()=>el.classList.remove('bump'),{once:true});
+  el.classList.add('bump'); el.addEventListener('transitionend',()=>el.classList.remove('bump'),{once:true});
 }
 
-function smokeEffect() {
-  const btn=document.getElementById('btn-add');
-  const rect=btn.getBoundingClientRect();
+function smokeEffect(){
+  const btn=document.getElementById('btn-add'); const rect=btn.getBoundingClientRect();
   const cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
   const container=document.getElementById('smoke-container');
   for(let i=0;i<6;i++){
@@ -644,21 +735,18 @@ function smokeEffect() {
     p.style.setProperty('--dx',Math.cos(angle)*dist+'px');
     p.style.setProperty('--dy',Math.sin(angle)*dist+'px');
     p.style.animationDelay=(i*40)+'ms';
-    container.appendChild(p);
-    p.addEventListener('animationend',()=>p.remove());
+    container.appendChild(p); p.addEventListener('animationend',()=>p.remove());
   }
 }
 
 let toastTimer;
-function showToast(msg) {
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove('show'),2500);
+window.showToast = function(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-function openResetModal(){document.getElementById('modal-backdrop').classList.add('open');}
-function closeModal(e){if(!e||e.target===document.getElementById('modal-backdrop'))document.getElementById('modal-backdrop').classList.remove('open');}
+window.openResetModal=()=>document.getElementById('modal-backdrop').classList.add('open');
+window.closeModal=(e)=>{if(!e||e.target===document.getElementById('modal-backdrop'))document.getElementById('modal-backdrop').classList.remove('open');}
 
 function scheduleMidnightReset(){
   const now=new Date(),next=new Date(now);
@@ -666,18 +754,23 @@ function scheduleMidnightReset(){
   setTimeout(()=>{render();scheduleMidnightReset();},next-now);
 }
 
+// ── URL auto-add ──
 const params=new URLSearchParams(window.location.search);
 if(params.get('add')==='1'){
-  window.addEventListener('DOMContentLoaded',()=>{
-    addCig(true);
+  window.addEventListener('load',()=>{
+    if(currentUser) addCig(true);
     window.history.replaceState({},'',window.location.pathname);
   });
 }
 
+// ── Init ──
 render();
 scheduleMidnightReset();
-if(getCount()>0) document.getElementById('btn-undo').disabled=false;
+if(getLocalCount()>0) document.getElementById('btn-undo').disabled=false;
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)render();});
+
+// Enter key on login
+document.getElementById('login-input').addEventListener('keydown', e=>{ if(e.key==='Enter') login(); });
 </script>
 </body>
 </html>
